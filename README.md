@@ -9,19 +9,30 @@ Add HuaweiAPI.dll into project reference in visual studio and include the namesp
 # Usage
 To login into Huawei router :
 
-    string ip = "192.168.8.1";
-    string username = "admin";
-    string password = "admin1";
+            string ip = "192.168.8.1";
+            string username = "admin";
+            string password = "admin1";
 
-    //check login state
-    if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true) { Console.WriteLine("Already logged in."); return; } //return if already logged in
+            //check login state
+            Console.WriteLine("Checking login state..");
+            if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true)
+            { 
+                Console.WriteLine("Already logged in."); 
+            }
+            else 
+            {
+                //not logged in
+                Console.WriteLine("Not logged in, logging in..");
+                var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
+                if (login == false)
+                { 
+                    Console.WriteLine("Failed to log in."); 
+                    Console.ReadLine(); 
+                    return; 
+                }
+            }
 
-    //not login, now loging in..
-    var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
-    if (login == false)
-        return; //fail to login. don't care
-
-    //logged in
+            //logged in
     Console.ReadKey();
         
 To view device info :
