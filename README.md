@@ -9,31 +9,31 @@ Add HuaweiAPI.dll into project reference in visual studio and include the namesp
 # Usage
 To login into Huawei router :
 
-            string ip = "192.168.8.1";
-            string username = "admin";
-            string password = "admin1";
+    string ip = "192.168.8.1";
+    string username = "admin";
+    string password = "admin1";
 
-            //check login state
-            Console.WriteLine("Checking login state..");
-            if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true)
-            { 
-                Console.WriteLine("Already logged in."); 
-            }
-            else 
-            {
-                //not logged in
-                Console.WriteLine("Not logged in, logging in..");
-                var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
-                if (login == false)
-                { 
-                    Console.WriteLine("Failed to log in."); 
-                    Console.ReadLine(); 
-                    return; 
-                }
-            }
+    //check login state
+    Console.WriteLine("Checking login state..");
+    if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true)
+    { 
+          Console.WriteLine("Already logged in."); 
+    }
+    else 
+    {
+          //not logged in
+          Console.WriteLine("Not logged in, logging in..");
+          var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
+          if (login == false)
+          { 
+              Console.WriteLine("Failed to log in."); 
+              Console.ReadLine(); 
+              return; 
+          }
+    }
 
-            //logged in
-    Console.ReadKey();
+    //logged in
+    Console.ReadKey();                  
         
 To view device info :
 
@@ -61,7 +61,7 @@ To view device info :
     workmode : LTE
     submask : 255.255.255.255
                   
-You can use GET/POST request to router's API. This is example of using GET request to api/monitoring/month_statistics
+Send GET request to router's API. This is example of using GET request to api/monitoring/month_statistics
     
     HuaweiAPI.HuaweiAPI.Tools.GET(ip, "api/monitoring/month_statistics");
     
@@ -71,6 +71,17 @@ You can use GET/POST request to router's API. This is example of using GET reque
     CurrentMonthUpload : 3329061338
     MonthDuration : 496666
     MonthLastClearTime : 2020-6-1
+    
+Send POST request to router's API. This is example of using GET request to api/language/current-language
+    
+    var data = @"<request>
+    <CurrentLanguage>en-us</CurrentLanguage>
+    </request>";
+    
+    HuaweiAPI.HuaweiAPI.Tools.POST(ip, data, "api/language/current-language");
+    
+    //output
+    #text : OK //for successfull POST request router responded with 'OK'
     
 # List of known API
 
