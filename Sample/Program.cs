@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HuaweiAPI;
 
-namespace HuaweiAPI_Test
+namespace Sample
 {
     class Program
     {
@@ -15,19 +15,38 @@ namespace HuaweiAPI_Test
             string username = "admin";
             string password = "admin1";
 
-            //example, check login state, if not logged in (0), we log in
-            if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true) { Console.WriteLine("Already logged in."); return; }
-
-            //not login, lets login
-            //for bool method you can set it as bool var too
-            var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
-            if (login == false)
-                return; //fail to login. don't care
+            //check login state
+            Console.WriteLine("Checking login state..");
+            if(HuaweiAPI.HuaweiAPI.MethodExample.loginState(ip) == true)
+            { 
+                Console.WriteLine("Already logged in."); 
+            }
+            else 
+            {
+                Console.WriteLine("Not logged in, logging in..");
+                var login = HuaweiAPI.HuaweiAPI.MethodExample.UserLogin(ip, username, password);
+                if (login == false)
+                { 
+                    Console.WriteLine("Failed to log in."); 
+                    Console.ReadLine(); 
+                    return; 
+                }
+            }
 
             //logged in
-            //lets view device info
-            HuaweiAPI.HuaweiAPI.MethodExample.DeviceInfo(ip);
-            Console.ReadKey();
+            Console.WriteLine("Logged in.");
+            Console.WriteLine();
+
+            //lets try sending GET request
+            HuaweiAPI.HuaweiAPI.Tools.GET(ip, "api/device/information");
+
+            //lets try sending POST request
+            var data = @"<request>
+  <CurrentLanguage>en-us</CurrentLanguage>
+</request>";
+            HuaweiAPI.HuaweiAPI.Tools.POST(ip, data, "api/language/current-language");
+
+            Console.ReadLine();
         }
     }
 }
