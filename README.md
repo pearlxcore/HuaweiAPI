@@ -72,7 +72,7 @@ Send GET request to router's API. This is example of using GET request to api/mo
     MonthDuration : 496666
     MonthLastClearTime : 2020-6-1
     
-Send POST request to router's API. This is example of using GET request to api/language/current-language
+Send POST request to router's API. This is example of using POST request to api/language/current-language
     
     var data = @"<request>
     <CurrentLanguage>en-us</CurrentLanguage>
