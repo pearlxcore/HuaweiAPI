@@ -1,5 +1,5 @@
 # HuaweiAPI
-Class library to communicate with Huawei router through router's API
+C# class library to communicate with Huawei router through router's API
 
 # How to use
 Add HuaweiAPI.dll into project reference in visual studio and include the namespace
