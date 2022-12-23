@@ -285,7 +285,7 @@ namespace HuaweiAPI
                 }
                 catch (Exception e)
                 {
-
+                    Console.WriteLine(e.Message);
                 }
 
                 return doc;
@@ -315,7 +315,7 @@ namespace HuaweiAPI
                     if (doc.OuterXml.ToString() == string.Empty) { Console.WriteLine("No response from router."); }
                     else if (!XMLTool.Beautify(doc).Contains("error"))
                     {
-                        
+
 
                         foreach (XmlNode node in doc.DocumentElement)
                         {
@@ -333,7 +333,7 @@ namespace HuaweiAPI
                 }
                 catch (Exception e)
                 {
-
+                    Console.WriteLine(e.Message);
                 }
 
                 return doc;
@@ -432,7 +432,7 @@ namespace HuaweiAPI
         /// <summary>
         /// Some method examples to view information within api type
         /// </summary>
-        public static class MethodExample
+        public static class Api
         {
 
             /// <summary>
@@ -664,6 +664,32 @@ namespace HuaweiAPI
                     Console.Clear();
                 }
             }
+
+            public static bool GetSmsList(string ip_address)
+            {
+
+                string data = @"<request><PageIndex>1</PageIndex><ReadCount>20</ReadCount><BoxType>1</BoxType><SortType>0</SortType><Ascending>0</Ascending><UnreadPreferred>0</UnreadPreferred></request>";
+
+                XmlDocument smsList;
+                smsList = HuaweiAPI.Tools.POST(ip_address, data, "api/sms/sms-list");
+
+                if (XMLTool.Beautify(smsList).Contains("<error>"))
+                    return false;
+                else
+                    return false;
+            }
+
+            public static bool SendSms(string ip_address, string message, string phoneNumber)
+            {
+                string data = @"<request><Index>-1</Index><Phones><Phone>"+phoneNumber+"</Phone></Phones><Sca></Sca><Content>" + message + "</Content><Length>" + message.Length.ToString() + "</Length><Reserved>1</Reserved><Date>" + DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") + "</Date></request>";
+                XmlDocument smsResult;
+                smsResult = HuaweiAPI.Tools.POST(ip_address, data, "api/sms/send-sms");
+                if (XMLTool.Beautify(smsResult).Contains("OK"))
+                    return true;
+                else
+                    return false;
+            }
+
         }
     }
 
