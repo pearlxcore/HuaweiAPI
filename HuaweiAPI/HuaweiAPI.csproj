@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable> 
+    <PackageId>googlesmsv2.backend.huaweiapi</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Matthieu PETITE</Authors>
+    <Description>Huawei Api for the Google Sms PRoject</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2023 (c) Matthieu PETITE Corporation. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/matthieupetite/GHPackages</RepositoryUrl>
+    <PackageTags>GoogleSms V2 Hauwai Api</PackageTags>
   </PropertyGroup>
 
 </Project>

@@ -34,16 +34,16 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build Project
-        run: dotnet build --configuration Release --no-restore
+        run: cd HuaweiAPI && dotnet build --configuration Release --no-restore
       - name: Pack
         if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
-        run: dotnet pack --configuration release -p:PackageVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+        run: cd HuaweiAPI && dotnet pack --configuration release -p:PackageVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
       - name: Prep packages
         if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
         run: dotnet nuget add source --username matthieupetite --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/matthieupetite/index.json"
       - name: Publish to GitHub packages 
         if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
-        run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"  --skip-duplicate
+        run: cd HuaweiAPI && dotnet nuget push **/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"  --skip-duplicate
       - name: Tag Repository
         uses: avakar/tag-and-release@v1
         if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
