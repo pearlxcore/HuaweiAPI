@@ -1,0 +1,53 @@
+name: Build and Pubblish
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: "Build Project and publish"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}   # checkout the correct branch name
+          fetch-depth: 0                # fetch the whole repo history
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+          includePrerelease: true
+      - name: Setup .NET Core SDK 6.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.x
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore
+      - name: Pack
+        if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
+        run: dotnet pack --configuration release -p:PackageVersion=${{ steps.gitversion.outputs.MajorMinorPatch }}
+      - name: Prep packages
+        if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
+        run: dotnet nuget add source --username matthieupetite --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/matthieupetite/index.json"
+      - name: Publish to GitHub packages 
+        if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
+        run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"  --skip-duplicate
+      - name: Tag Repository
+        uses: avakar/tag-and-release@v1
+        if: github.event.issue.pull_request == '' && contains('refs/heads/master', github.ref)
+        with:
+          tag_name: v${{ steps.gitversion.outputs.MajorMinorPatch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
