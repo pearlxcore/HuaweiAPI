@@ -1,6 +1,8 @@
 # HuaweiAPI
 C# class library to communicate with Huawei router through router's API
 
+[![Github All Releases](https://img.shields.io/github/downloads/pearlxcore/HuaweiAPI/total.svg)]()
+
 # How to use
 Add HuaweiAPI.dll into project reference in visual studio and include the namespace
 
